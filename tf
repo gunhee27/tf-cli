@@ -26,10 +26,6 @@ needs_init() {
   [[ ! -d ".terraform" ]] && return 0
   [[ ! -f ".terraform.lock.hcl" ]] && return 0
   [[ ! -d ".terraform/providers" ]] && return 0
-  local newer
-  newer=$(find . -maxdepth 1 -name "*.tf" -newer ".terraform.lock.hcl" 2>/dev/null \
-    | xargs grep -l 'required_providers\|terraform {' 2>/dev/null | head -1)
-  [[ -n "$newer" ]] && return 0
   return 1
 }
 
