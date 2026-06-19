@@ -16,9 +16,9 @@ warn()  { echo -e "${YELLOW}⚠ $*${RESET}"; }
 die()   { echo -e "${RED}✖ $*${RESET}" >&2; exit 1; }
 
 confirm() {
-  local prompt="${1:-계속하시겠습니까?} [y/N] "
+  local prompt="${1:-계속하시겠습니까?} [y/N] " ans
   read -r -p "$(echo -e "${BOLD}${prompt}${RESET}")" ans
-  [[ "${ans,,}" == "y" ]]
+  if [[ "${ans,,}" == "y" ]]; then return 0; else return 1; fi
 }
 
 # ─── init 필요 여부 판단 ─────────────────────────────────────────────────────
@@ -36,7 +36,9 @@ needs_init() {
 assert_tf_project() {
   local tf_files
   tf_files=$(find . -maxdepth 1 -name "*.tf" 2>/dev/null | head -1)
-  [[ -z "$tf_files" ]] && die "현재 디렉토리에 .tf 파일이 없습니다 (terraform 프로젝트가 아닙니다)"
+  if [[ -z "$tf_files" ]]; then
+    die "현재 디렉토리에 .tf 파일이 없습니다 (terraform 프로젝트가 아닙니다)"
+  fi
 }
 
 # ─── main ────────────────────────────────────────────────────────────────────
