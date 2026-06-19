@@ -18,7 +18,7 @@ die()   { echo -e "${RED}✖ $*${RESET}" >&2; exit 1; }
 confirm() {
   local prompt="${1:-계속하시겠습니까?} [y/N] " ans
   read -r -p "$(echo -e "${BOLD}${prompt}${RESET}")" ans
-  if [[ "${ans,,}" == "y" ]]; then return 0; else return 1; fi
+  if [[ "$ans" == "y" || "$ans" == "Y" ]]; then return 0; else return 1; fi
 }
 
 # ─── init 필요 여부 판단 ─────────────────────────────────────────────────────
